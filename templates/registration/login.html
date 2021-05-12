@@ -1,0 +1,50 @@
+{% extends 'include/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block style %}
+    <style>
+     .mt-50{
+        padding-top: 15%;
+    }
+    </style>
+{% endblock style %}
+
+
+{% block content %}
+
+    <div class="container mt-50">
+        <div class="row">
+
+
+            <div class="col-md-4 offset-md-4">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <p>Your username and password didn't match. Please try again.</p>
+                    {% endif %}
+
+                    {% for field in form.visible_fields %}
+                        <div class="form-group mb-3">
+
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field|add_class:'form-control' }}
+                            {% for error in field.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'include/base.html' %}
+
+{% block title %}
+    Schemas
+{% endblock title %}
+
+{% block navbar %}
+    {% include 'include/header.html' %}
+{% endblock navbar %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+
+            <h3>Data schemas</h3>
+            <a class="btn btn-success col-md-3" href="{% url 'schemas:create_schema' %}">Create new schema</a>
+
+            <table class="table mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Modified</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for schema in schemas %}
+                    <tr>
+                        <th scope="row">{{ schema.id }}</th>
+                        <td>{{ schema.name }}</td>
+                        <td>{{ schema.created_at }}</td>
+                        <td>
+                <span>
+                    Edit
+                </span>
+
+                <span>
+                    Delete
+                </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock content %}

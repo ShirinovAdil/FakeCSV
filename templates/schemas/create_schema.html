@@ -1,0 +1,59 @@
+{% extends 'include/base.html' %}
+
+{% block title %}
+    Create new schema
+{% endblock title %}
+
+{% block navbar %}
+    {% include 'include/header.html' %}
+{% endblock navbar %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+            <form method="POST" action="">
+                {% load widget_tweaks %}
+                {% csrf_token %}
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group col-md-3">
+
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                        {{ field|add_class:'form-control col-md' }}
+
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="row">
+                        {% for field in form.visible_fields %}
+                            <div class="form-group col">
+
+                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                                {{ field|add_class:'form-control col-md' }}
+
+                                {% for error in field.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">Create</button>
+            </form>
+
+
+            <input type="button" value="Add More" id="add_more">
+
+
+        </div>
+    </div>
+
+
+{% endblock content %}

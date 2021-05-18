@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'celery',
+    'django_celery_results',
+    'celery_progress',
     'widget_tweaks',
 
-    'users',
+
     'schemas',
 ]
 
@@ -53,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "users.middlewares.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = 'Planeks.urls'
@@ -125,7 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+LOCAL_STATIC_FOLDER = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [LOCAL_STATIC_FOLDER]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -133,3 +140,15 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERYD_STATE_DB = os.path.join(BASE_DIR, "celery-temp")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TRACK_STARTED = True
+CELERY_TASK_TRACK_STARTED = True
+CELERY_IGNORE_RESULT = False
+CELERY_TIMEZONE = TIME_ZONE

@@ -11,6 +11,10 @@ class SchemaModelForm(forms.ModelForm):
 ColumnFormset = forms.modelformset_factory(
     ColumnModel,
     fields='__all__',
-    extra=1,
+    extra=4,
     exclude=['schema'],
 )
+
+
+class RowsForm(forms.Form):
+    rows = forms.IntegerField()

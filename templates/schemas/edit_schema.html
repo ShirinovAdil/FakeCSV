@@ -1,7 +1,7 @@
 {% extends 'include/base.html' %}
 
 {% block title %}
-    Create new schema
+    Edit schema
 {% endblock title %}
 
 {% block navbar %}
@@ -32,6 +32,12 @@
 
                     {{ formset.management_form }}
                     {% for form in formset %}
+                        {% for form in formset %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <!-- form.visible fields go here -->
+                        {% endfor %}
                         <div class="row schema-form mt-3">
                             {% for field in form.visible_fields %}
                                 <div class="form-group col">
@@ -51,7 +57,7 @@
                     {% endfor %}
 
                     <button id="add-form" class="btn btn-primary mt-2" type="button">Add Another column</button>
-                    <button class="btn btn-success float-right mt-2" type="submit">Create</button>
+                    <button class="btn btn-success float-right mt-2" type="submit">Update</button>
                 </div>
 
             </form>

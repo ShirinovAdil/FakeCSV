@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
         {% include 'include/head.html' %}
+        {% block head %}
+        {% endblock head %}
     <title>
         {% block title %}
         {% endblock title %}
@@ -22,5 +24,9 @@
 {% endblock content %}
 
 {% include 'include/script.html' %}
+
+{% block custom_scripts %}
+
+{% endblock custom_scripts %}
 </body>
 </html>

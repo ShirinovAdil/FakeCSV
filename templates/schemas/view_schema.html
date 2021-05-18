@@ -1,0 +1,136 @@
+`{% extends 'include/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+    View datasets
+{% endblock title %}
+
+{% block navbar %}
+    {% include 'include/header.html' %}
+{% endblock navbar %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+
+            <h3>Datasets</h3>
+            <div class="form-group col-md-3">
+                <form action="" method="post" id="row-form">
+                    {% csrf_token %}
+
+                    {% for field in form.visible_fields %}
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                        {{ field|add_class:'form-control' }}
+
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-success mt-2" id="do-task">Generate</button>
+                </form>
+            </div>
+
+            <table class="table mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Create</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if schema.files.count > 0 %}
+                    {% for file in schema.files.all %}
+                        <tr>
+                            <th scope="row">{{ file.id }}</th>
+                            <td>{{ file.created_at }}</td>
+                            <td>
+                                <span class="badge bg-{% if file.status == 'Ready' %}success{% elif file.status == 'Processing' %}primary{% else %}danger{% endif %}">{{ file.status }}</span>
+                            </td>
+                            <td>
+                                {% if file.status == 'Ready' %}
+{#                                    <a href="{% url 'schemas:download' file.file.url %}" class="btn btn-dark float-right">Download</a>#}
+                                    <a href="{{ file.file.url }}" class="btn btn-dark float-right">Download</a>
+                                {% endif %}
+                                <a class="text-danger" href="{% url 'schemas:delete_file' file.id %}">Delete</a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            <div class="current-task">
+                <h4>{% if task_id %} Task ID: {{ task_id }} {% endif %}</h4>
+            </div>
+
+            <div class="status">
+                <div id="task-state"></div>
+                <div id="task-details"></div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+{% block custom_scripts %}
+
+    <script>
+        function updateProgress(task_id) {
+            $.ajax({
+                url: "task_state",
+                type: "POST",
+                data: "task_id=" + task_id,
+            }).done(function (data) {
+                $('#task-state').html(data.state);
+                $('#task-details').html(data.info);
+                console.log(data);
+            });
+            setTimeout(updateProgress, 500, task_id);
+        }
+
+       // $('#do-task').on('click', function () {
+        //    let task_id = {#' {{ request.session.task_id }}'; #}
+        //    updateProgress(task_id);
+       // })
+    </script>
+
+    <script>
+        document.getElementById('row-form').addEventListener('submit', function (event) {
+            console.log("a");
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            create_post();
+        })
+
+        // AJAX for posting
+        function create_post() {
+            $.ajax({
+                url: "", // the endpoint
+                type: "POST", // http method
+                data: {rows: $('#id_rows').val(), csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()}, // data sent with the post request
+
+                // handle a successful response
+                success: function (json) {
+                    $('#id_rows').val(''); // remove the value from the input
+                },
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>");
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }
+    </script>
+{% endblock custom_scripts %}
+
+
+`

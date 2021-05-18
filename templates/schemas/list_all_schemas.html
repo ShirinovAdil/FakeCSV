@@ -28,16 +28,16 @@
                 {% for schema in schemas %}
                     <tr>
                         <th scope="row">{{ schema.id }}</th>
-                        <td>{{ schema.name }}</td>
+                        <td><a href="{% url 'schemas:view_schema' schema.id %}">{{ schema.name }}</a></td>
                         <td>{{ schema.created_at }}</td>
                         <td>
-                <span>
-                    Edit
-                </span>
+                            <span>
+                                    <a class="text-warning" href="{% url 'schemas:edit_schema' schema.id %}">Edit</a>
+                            </span>
 
-                <span>
-                    Delete
-                </span>
+                            <span>
+                                <a class="text-danger" href="{% url 'schemas:delete_schema' schema.id %}">Delete</a>
+                            </span>
                         </td>
                     </tr>
                 {% endfor %}

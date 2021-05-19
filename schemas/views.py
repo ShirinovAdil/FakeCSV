@@ -61,10 +61,7 @@ def create_schema(request):
 @login_required
 def edit_schema(request, pk):
     """
-    EDIT
-    :param request:
-    :param pk:
-    :return:
+    Edit the schema structure
     """
     schema_to_edit = SchemaModel.objects.get(id=pk)
     columns = ColumnModel.objects.filter(schema_id=pk)
@@ -75,7 +72,6 @@ def edit_schema(request, pk):
         schema_form = SchemaModelForm(request.POST, instance=schema_to_edit)
         formset = ColumnFormset(request.POST, initial=[x for x in schema_to_edit.column_in_schemas.all()])
         if schema_form.is_valid() and formset.is_valid():
-
             schema = schema_form.save()
             formset.save()
             return redirect('schemas:list_all_schemas')

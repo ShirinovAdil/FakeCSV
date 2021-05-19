@@ -16,7 +16,8 @@ from django.forms.models import model_to_dict
 
 import os
 import mimetypes
-
+import logging
+import sys
 
 @login_required
 def home(request):
@@ -115,6 +116,9 @@ def view_schema(request, pk):
     if request.method == 'POST':
         rows = int(request.POST.get('rows'))
         job = make_csv_file.apply_async((schema.id, rows))
+        logger = logging.getLogger(__name__)
+        logger.info('Task was started from view')
+        sys.stdout.flush()
         try:
             del request.session['task_id']
         except KeyError:

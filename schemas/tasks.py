@@ -6,6 +6,8 @@ from celery.result import AsyncResult
 
 import csv
 import uuid
+import logging
+import sys
 
 
 @app.task(bind=True)
@@ -15,6 +17,8 @@ def make_csv_file(self, schema_id, rows):
     """
     schema = SchemaModel.objects.get(id=schema_id)
     salt = str(uuid.uuid4())
+    logger = logging.getLogger(__name__)
+    logger.info('Task was started from tasks')
     try:
         columns = [
             column for column in schema.column_in_schemas.all().order_by("order")
@@ -38,6 +42,8 @@ def make_csv_file(self, schema_id, rows):
         schema.files.create(file=filename, status=SchemaModelStatusChoices.READY)
     except Exception as exc:
         print(exc)
+        logger = logging.getLogger('MYAPP')
+        logger.info(exc)
         schema.files.create(file='', status=SchemaModelStatusChoices.FAILED)
     finally:
         schema.save()

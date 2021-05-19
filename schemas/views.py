@@ -114,6 +114,7 @@ def view_schema(request, pk):
         'form': form,
     }
     if request.method == 'POST':
+        print("post request")
         rows = int(request.POST.get('rows'))
         job = make_csv_file.apply_async((schema.id, rows))
         logger = logging.getLogger(__name__)

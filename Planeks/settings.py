@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import redis
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -156,13 +157,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 
-# CELERY_BROKER_URL = 'redis://localhost:6379'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-# CELERYD_STATE_DB = os.path.join(BASE_DIR, "celery-temp")
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TRACK_STARTED = True
-# CELERY_TASK_TRACK_STARTED = True
-# CELERY_IGNORE_RESULT = False
-# CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = redis.from_url(os.environ.get("REDIS_URL"))
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
+CELERYD_STATE_DB = os.path.join(BASE_DIR, "celery-temp")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TRACK_STARTED = True
+CELERY_TASK_TRACK_STARTED = True
+CELERY_IGNORE_RESULT = False
+CELERY_TIMEZONE = TIME_ZONE

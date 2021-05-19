@@ -86,11 +86,14 @@ WSGI_APPLICATION = 'Planeks.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd3blpsnb3l0pja',
+        'HOST': 'ec2-54-228-99-58.eu-west-1.compute.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'rkmjnalnmdfhpd',
+        'PASSWORD': '6a90e66ad5206970420c4973d4afca94abdc8a3fcf5a7858d1f8fd87004d1e63',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

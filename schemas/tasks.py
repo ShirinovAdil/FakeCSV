@@ -20,7 +20,7 @@ def make_csv_file(self, schema_id, rows):
             column for column in schema.column_in_schemas.all().order_by("order")
         ]
         filename = f"/schema-{schema.id}---{salt}.csv"
-        path = settings.MEDIA_ROOT + filename
+        path = settings.DEFAULT_FILE_STORAGE + filename
         f = open(path, "w")
         f.truncate()
         csv_writer = csv.writer(f, delimiter=schema.separator)

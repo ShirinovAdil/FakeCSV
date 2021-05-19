@@ -10,6 +10,7 @@ click-plugins==1.1.1
 click-repl==0.1.6
 Django==3.2.2
 django-celery-results==2.0.1
+django-redis==4.12.1
 django-widget-tweaks==1.4.8
 gunicorn==20.1.0
 kombu==5.0.2

@@ -158,10 +158,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 
-r = redis.from_url(os.environ.get("REDIS_URL"))
-BROKER_URL = redis.from_url(os.environ.get("REDIS_URL"))
+CELERY_BROKER_URL = redis.from_url(os.environ.get("REDIS_URL"))
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
-CELERYD_STATE_DB = os.path.join(BASE_DIR, "celery-temp")
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'

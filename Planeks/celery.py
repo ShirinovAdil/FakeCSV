@@ -10,7 +10,7 @@ app = Celery("Planeks")
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-app.autodiscover_tasks(settings.INSTALLED_APPS)
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
 @app.task(bind=True)
